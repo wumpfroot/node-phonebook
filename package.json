@@ -2,6 +2,7 @@
 	"name": "phonebook",
 	"version": "1.0.0",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
 		"start": "node --watch index.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -9,5 +10,8 @@
 	"keywords": [],
 	"author": "wumpfroot",
 	"license": "ISC",
-	"description": "Phonebook to keep tabs on contacts"
+	"description": "Phonebook to keep tabs on contacts",
+	"dependencies": {
+		"express": "^4.21.2"
+	}
 }
