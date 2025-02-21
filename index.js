@@ -30,6 +30,17 @@ app.get("/api/persons/:id", (req, res) => {
 	res.json(person);
 });
 
+// DELETE request for a single contact
+app.delete("/api/persons/:id", (req, res) => {
+	const id = req.params.id;
+	const index = persons.findIndex((person) => person.id === id);
+
+	if (index === -1) res.status(404).send(`Person with the id of ${id} not found`);
+
+	persons.splice(index, 1);
+	res.json(persons);
+});
+
 const PORT = 8000;
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
