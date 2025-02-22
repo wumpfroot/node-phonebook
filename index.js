@@ -36,7 +36,7 @@ app.delete("/api/persons/:id", (req, res) => {
 	const id = req.params.id;
 	const index = persons.findIndex((person) => person.id === id);
 
-	if (index === -1) return res.status(404).send(`Person with the id of ${id} not found`);
+	if (index === -1) return res.status(404).json({ error: `Person with the id of ${id} not found` });
 
 	persons.splice(index, 1);
 	return res.json(persons);
@@ -53,7 +53,15 @@ app.post("/api/persons", (req, res) => {
 		number: number,
 	};
 
-	if (!name || !number) return res.status(400).send("Fill all the fields");
+	if (!name || !number) return res.status(400).json({ error: "Fill all the fields" });
+
+	let names = [];
+	for (let i = 0; i < persons.length; i++) {
+		let values = persons[i].name;
+		names.push(values);
+	}
+
+	if (names.includes(name)) return res.status(409).json({ error: "name must be unique" });
 
 	persons.push(person);
 	return res.status(201).json({ "new person added": persons });
