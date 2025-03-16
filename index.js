@@ -1,9 +1,22 @@
 import express from "express";
+import morgan from "morgan";
 import persons from "./persons.js";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+morgan.token("body", (req) => {
+	return JSON.stringify(req.body);
+});
+
+app.use((req, res, next) => {
+	if (Object.keys(req.body).length !== 0) {
+		morgan(":method :url :status :res[content-length] - :response-time ms :body")(req, res, next);
+	} else {
+		morgan("tiny")(req, res, next);
+	}
+});
 
 app.get("/", (req, res) => {
 	res.send("<h1>Hello <i>express</i></h1>");
@@ -64,6 +77,7 @@ app.post("/api/persons", (req, res) => {
 	if (names.includes(name)) return res.status(409).json({ error: "name must be unique" });
 
 	persons.push(person);
+
 	return res.status(201).json({ "new person added": persons });
 });
 
